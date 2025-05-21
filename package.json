@@ -2,9 +2,11 @@
   "name": "granomax-api",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
     "star": "node src/index.js"
   },
   "keywords": [],
