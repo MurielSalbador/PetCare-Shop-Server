@@ -1,5 +1,6 @@
 // src/routes/products.routes.js
 import { Router } from "express";
+import { Op } from "sequelize";
 import { Products } from "../models/products.js";
 
 const router = Router();
@@ -14,15 +15,30 @@ router.post("/", async (req, res) => {
   }
 });
 
-// Agrega en products.routes.js
 router.get("/", async (req, res) => {
   try {
-    const products = await Products.findAll();
+    const { brand, category, minPrice } = req.query;
+
+    // Construimos el filtro dinámico
+    const where = {};
+
+    if (brand && brand !== "all") {
+      where.brand = brand;
+    }
+    if (category && category !== "all") {
+      where.category = category;
+    }
+    if (minPrice) {
+      where.price = { [Op.gte]: Number(minPrice) };
+    }
+
+    const products = await Products.findAll({ where });
     res.json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 // Obtener producto por ID
