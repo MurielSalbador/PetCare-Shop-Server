@@ -1,29 +1,32 @@
-import User from '../models/user.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import User from "../models/user.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // Registro de usuario
 export const register = async (req, res) => {
-  const { username, lastName, email, password, role } = req.body;
+  const { username, email, password, role } = req.body;
 
   try {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: 'Este email ya se encuentra registrado.' });
+      return res
+        .status(400)
+        .json({ error: "Este email ya se encuentra registrado." });
     }
 
     const hash = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
-      username,
-      email,
-      password: hash,
-    });
+   const user = await User.create({
+  username,
+  email,
+  password: hash,
+  role, // 👈 incluir role si lo estás pasando
+});
 
     res.status(201).json({ id: user.id });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error al registrar el usuario.' });
+    res.status(500).json({ error: "Error al registrar el usuario." });
   }
 };
 
@@ -34,23 +37,31 @@ export const login = async (req, res) => {
   try {
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      return res.status(401).json({ error: 'Usuario no encontrado' });
+      return res.status(401).json({ error: "Usuario no encontrado" });
     }
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      return res.status(401).json({ error: 'Contraseña incorrecta' });
+      return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
     const token = jwt.sign(
       { id: user.id, role: user.role, username: user.username },
-      'secreto123',
-      { expiresIn: '1h' }
+      "secreto123",
+      { expiresIn: "6h" }
     );
 
-    res.json({ token });
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error al iniciar sesión.' });
+    res.status(500).json({ error: "Error al iniciar sesión." });
   }
 };
