@@ -12,7 +12,7 @@ export const createInitialAdmins = async () => {
     },
     {
       username: 'superadmin',
-      email: 'RubioHnos2025@gmail.com',
+      email: 'RubioHnos2025SA@gmail.com',
       password: 'rubiohermanosSA2025',
       role: UserRoles.SUPERADMIN,
     },

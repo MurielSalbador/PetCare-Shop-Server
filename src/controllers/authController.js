@@ -9,19 +9,17 @@ export const register = async (req, res) => {
   try {
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ error: "Este email ya se encuentra registrado." });
+      return res.status(400).json({ error: "Este email ya se encuentra registrado." });
     }
 
     const hash = await bcrypt.hash(password, 10);
 
-   const user = await User.create({
-  username,
-  email,
-  password: hash,
-  role, // 👈 incluir role si lo estás pasando
-});
+    const user = await User.create({
+      username,
+      email,
+      password: hash,
+      role,
+    });
 
     res.status(201).json({ id: user.id });
   } catch (err) {
@@ -45,10 +43,11 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
+    const secret = process.env.JWT_SECRET || "rubio2025";
     const token = jwt.sign(
-      { id: user.id, role: user.role, username: user.username },
-      "secreto123",
-      { expiresIn: "6h" }
+      { id: user.id, email: user.email, role: user.role },
+      secret,
+      { expiresIn: "8h" }
     );
 
     res.json({
