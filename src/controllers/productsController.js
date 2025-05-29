@@ -2,6 +2,62 @@ import { Op } from "sequelize";
 import { sequelize } from "../db.js";
 import { Products } from "../models/products.js";
 
+
+// Decerementar stock
+export const decrementStock = async (req, res) => {
+  const { productId, quantity } = req.body;
+
+  try {
+    const product = await Products.findByPk(productId);
+    if (!product) return res.status(404).json({ message: 'Producto no encontrado' });
+
+    if (product.stock < quantity) {
+      return res.status(400).json({ message: 'Stock insuficiente' });
+    }
+
+    product.stock -= quantity;
+    await product.save();
+
+    res.json({ message: 'Stock actualizado', product });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al actualizar stock', error });
+  }
+};
+
+//decrementacion multiple
+export const decrementMultipleStock = async (req, res) => {
+  const updates = req.body;
+
+  try {
+    console.log("Recibido para actualizar stock:", updates);
+
+    for (const { productId, quantity } of updates) {
+      const product = await Products.findByPk(productId);
+      if (!product) {
+        console.log(`Producto con ID ${productId} no encontrado`);
+        continue;
+      }
+
+      if (product.stock < quantity) {
+        return res.status(400).json({ message: `Stock insuficiente para ${product.title}` });
+      }
+
+      product.stock -= quantity;
+      await product.save();
+      console.log(`Nuevo stock de ${product.title}: ${product.stock}`);
+    }
+
+    res.json({ message: 'Stock de productos actualizado' });
+  } catch (error) {
+    console.error("Error al actualizar el stock:", error);
+    res.status(500).json({ message: 'Error al actualizar múltiples productos', error });
+  }
+};
+
+
+
+
+
 // Crear producto
 export const createProduct = async (req, res) => {
   try {

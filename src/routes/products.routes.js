@@ -5,11 +5,22 @@ import {
   getUniqueBrands,
   getProductById,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  decrementStock,
+  decrementMultipleStock
 } from "../controllers/productsController.js";
 import { verifyToken, isAdminOrSuperAdmin } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
+
+
+//Ruta actualizar stock
+router.put('/decrement-stock',verifyToken, isAdminOrSuperAdmin, decrementStock);
+
+
+//ruta actualizacion multiple
+router.put('/decrement-multiple', verifyToken, isAdminOrSuperAdmin, decrementMultipleStock);
+
 
 // Rutas públicas
 router.get("/", getAllProducts);

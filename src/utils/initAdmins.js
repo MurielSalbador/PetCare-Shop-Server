@@ -1,19 +1,22 @@
 import bcrypt from 'bcryptjs';
 import User from '../models/user.js';
 import { UserRoles } from '../enums/enums.js';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Cargar las variables de entorno
 
 export const createInitialAdmins = async () => {
   const admins = [
     {
       username: 'admin',
-      email: 'RubioHnos2025@gmail.com',
-      password: 'rubiohermanos2025',
+      email: process.env.ADMIN_EMAIL,
+      password: process.env.ADMIN_PASSWORD,
       role: UserRoles.ADMIN,
     },
     {
       username: 'superadmin',
-      email: 'RubioHnos2025SA@gmail.com',
-      password: 'rubiohermanosSA2025',
+      email: process.env.SUPERADMIN_EMAIL,
+      password: process.env.SUPERADMIN_PASSWORD,
       role: UserRoles.SUPERADMIN,
     },
   ];
