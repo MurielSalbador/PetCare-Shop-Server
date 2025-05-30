@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { TODO_FILTERS } from '../../../../Mayorista/src/consts.js';
+import { TODO_FILTERS } from '../../../../PetCare-Shop-Cliente/src/consts.js';
 
 export const useTodos = () => {
   const [todos, setTodos] = useState([]);

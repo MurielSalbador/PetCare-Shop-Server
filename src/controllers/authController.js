@@ -43,7 +43,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
-    const secret = process.env.JWT_SECRET || "rubio2025";
+    const secret = process.env.JWT_SECRET || "petcare2025";
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       secret,

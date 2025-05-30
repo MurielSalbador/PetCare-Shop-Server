@@ -9,7 +9,7 @@ export const verifyToken = (req, res, next) => {
     return res.status(401).json({ error: "Token no proporcionado" });
   }
 
-  const secret = process.env.JWT_SECRET || "rubio2025";
+  const secret = process.env.JWT_SECRET || "petcare2025";
 
   jwt.verify(token, secret, (err, user) => {
     if (err) return res.status(403).json({ error: "Token inválido" });
