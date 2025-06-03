@@ -1,10 +1,14 @@
 import User from "../models/user.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { UserRoles } from "../enums/enums.js"; 
+
+dotenv.config();
 
 // Registro de usuario
 export const register = async (req, res) => {
-  const { username, email, password, role } = req.body;
+  const { username, email, password } = req.body;
 
   try {
     const existingUser = await User.findOne({ where: { email } });
@@ -14,14 +18,25 @@ export const register = async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10);
 
+    const adminKeyword = process.env.ADMIN_EMAIL_KEYWORD || "admin";
+    const superadminKeyword = process.env.SUPERADMIN_EMAIL_KEYWORD || "superAdmin";
+
+    let assignedRole = UserRoles.USER;
+
+    if (email.toLowerCase().includes(superadminKeyword.toLowerCase())) {
+      assignedRole = UserRoles.SUPERADMIN;
+    } else if (email.toLowerCase().includes(adminKeyword.toLowerCase())) {
+      assignedRole = UserRoles.ADMIN;
+    }
+
     const user = await User.create({
       username,
       email,
       password: hash,
-      role,
+      role: assignedRole,
     });
 
-    res.status(201).json({ id: user.id });
+    res.status(201).json({ id: user.id, role: user.role });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Error al registrar el usuario." });
@@ -38,15 +53,18 @@ export const login = async (req, res) => {
       return res.status(401).json({ error: "Usuario no encontrado" });
     }
 
+    if (user.isBlocked == 1 || user.isBlocked === true || user.isBlocked == "1" ) {
+      return res.status(403).json({ error: "Este usuario está bloqueado." });
+    }
+
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
       return res.status(401).json({ error: "Contraseña incorrecta" });
     }
 
-    const secret = process.env.JWT_SECRET || "petcare2025";
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      secret,
+      process.env.JWT_SECRET || "rubio2025",
       { expiresIn: "8h" }
     );
 
@@ -64,3 +82,4 @@ export const login = async (req, res) => {
     res.status(500).json({ error: "Error al iniciar sesión." });
   }
 };
+

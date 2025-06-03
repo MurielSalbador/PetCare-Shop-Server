@@ -24,6 +24,10 @@ const User = sequelize.define('User', {
         type: DataTypes.ENUM(Object.values(UserRoles)),
         allowNull: false,
         defaultValue: UserRoles.USER,
+    },
+    isBlocked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
     }
 }, {
     timestamps: false
