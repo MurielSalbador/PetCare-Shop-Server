@@ -10,13 +10,12 @@ import {
 import {
   verifyToken,
   isSuperAdmin,
-  isAdminOrSuperAdmin,
 } from "../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-// ✅ Ruta accesible por admin y superAdmin
-router.get("/", verifyToken, isAdminOrSuperAdmin, getAllUsers);
+// ✅ Ruta accesible por superAdmin
+router.get("/", verifyToken, isSuperAdmin, getAllUsers);
 
 // ✅ Estas solo las puede usar el superAdmin
 router.put("/:id/role", verifyToken, isSuperAdmin, updateUserRole);

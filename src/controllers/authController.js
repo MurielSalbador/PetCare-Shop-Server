@@ -59,7 +59,7 @@ export const login = async (req, res) => {
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      return res.status(401).json({ error: "Contraseña incorrecta" });
+      return res.status(401).json({ error: "Contraseña / correo incorrectos" });
     }
 
     const token = jwt.sign(

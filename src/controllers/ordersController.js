@@ -95,12 +95,15 @@ export const updateOrderStatus = async (req, res) => {
 export const deleteOrder = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("ID recibido para borrar:", id); // ✅
 
     if (req.user.role !== "superAdmin") {
       return res.status(403).json({ error: "No autorizado para eliminar pedidos" });
     }
 
     const order = await Orders.findByPk(id);
+    console.log("Pedido encontrado:", order); // ✅
+
     if (!order) return res.status(404).json({ error: "Pedido no encontrado" });
 
     if (order.status !== "Completado") {
