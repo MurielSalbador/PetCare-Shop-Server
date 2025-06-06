@@ -14,20 +14,26 @@ import authRoutes from "./routes/auth.js";
 import productRoutes from "./routes/products.routes.js";
 import orderRoutes from "./routes/orders.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import resetPasswordRoutes from "./routes/resetPassword.routes.js";
 
 //create db
 import "./models/products.js";
 import "./models/user.js";
 
+console.log("Reset password routes cargadas");
+
 const app = express();
 app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
+
+
 
 // Rutas existentes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/password", resetPasswordRoutes);
 
 const PORT = 3000;
 
