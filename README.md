@@ -21,3 +21,9 @@ npm install sqlite3
 
 
 node src/index.js
+
+```bash - para descargar todo con una linea "MAS DIRECTO"
+
+npm install axios zustand @tanstack/react-query nodemailer dotenv express sequelize mysql2 jsonwebtoken bcryptjs cors sqlite3
+npm audit fix
+node src/index.js
