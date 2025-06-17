@@ -1,6 +1,6 @@
 // src/models/products.js
 import { DataTypes } from "sequelize";
-import { sequelize } from "../db.js"; // Asegúrate de importar bien
+import { sequelize } from "../db.js";
 
 export const Products = sequelize.define('Products', {
   id: {
@@ -34,11 +34,11 @@ export const Products = sequelize.define('Products', {
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: DataTypes.NOW, // 👈 Soluciona el error NOT NULL
+    defaultValue: DataTypes.NOW,
   },
   updatedAt: {
     type: DataTypes.DATE,
     allowNull: false,
-    defaultValue: DataTypes.NOW, // 👈 útil si usás updatedAt
+    defaultValue: DataTypes.NOW,
   }
 });

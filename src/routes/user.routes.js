@@ -14,10 +14,10 @@ import {
 
 const router = express.Router();
 
-// ✅ Ruta accesible por superAdmin
+//  Ruta accesible por superAdmin
 router.get("/", verifyToken, isSuperAdmin, getAllUsers);
 
-// ✅ Estas solo las puede usar el superAdmin
+//  Estas solo las puede usar el superAdmin
 router.put("/:id/role", verifyToken, isSuperAdmin, updateUserRole);
 router.put("/:id/block", verifyToken, isSuperAdmin, toggleBlockUser);
 router.delete("/:id", verifyToken, isSuperAdmin, deleteUser);

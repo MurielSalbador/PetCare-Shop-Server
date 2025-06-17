@@ -19,7 +19,7 @@ const Orders = sequelize.define("orders", {
     allowNull: false,
   },
   items: {
-    type: DataTypes.JSON, // <-- importante
+    type: DataTypes.JSON, 
     allowNull: false,
   },
   total: {

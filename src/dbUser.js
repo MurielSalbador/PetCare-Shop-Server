@@ -1,7 +1,8 @@
+// src/config/dbUser.js
 import { Sequelize } from "sequelize";
 
-export const sequelize = new Sequelize('PetCareShop_User', 'root', 'M46446532S', {
-  host: 'localhost',
-  dialect: 'mysql',
+export const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: './PetCareShop_User.sqlite',
   logging: false,
 });

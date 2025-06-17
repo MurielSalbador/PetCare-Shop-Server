@@ -8,6 +8,7 @@ import cors from "cors";
 //db
 import { sequelize } from "./db.js";           // DB productos
 import { sequelize as userDB } from "./dbUser.js"; // DB usuarios
+import { seedProducts } from "./seeders/seedProducts.js";
 
 //rutas
 import authRoutes from "./routes/auth.js";
@@ -45,6 +46,8 @@ const startServer = async () => {
     console.log("Bases de datos conectadas.");
 
     await sequelize.sync({ alter: true });
+    await seedProducts(); // carga los productos si no hay
+
     await userDB.sync({ alter: true });
 
     app.listen(PORT, () => {
