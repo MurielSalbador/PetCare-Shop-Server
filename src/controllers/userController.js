@@ -27,20 +27,9 @@ export const updateUserRole = async (req, res) => {
 
     user.role = role;
 
-    // Modificar el dominio del email según el rol
-    const usernameOnly = user.email.split("@")[0];
-
-    if (role === "user") {
-      user.email = `${usernameOnly}@gmail.com`;
-    } else if (role === "admin") {
-      user.email = `${usernameOnly}@admin.com`;
-    } else if (role === "superAdmin") {
-      user.email = `${usernameOnly}@superadmin.com`;
-    }
-
     await user.save();
 
-    res.json({ message: "Rol y email actualizados", user });
+    res.json({ message: "Rol actualizado", user });
   } catch (err) {
     res.status(500).json({ error: "Error al actualizar el rol" });
   }

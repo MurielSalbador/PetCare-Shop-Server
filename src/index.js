@@ -9,6 +9,7 @@ import cors from "cors";
 import { sequelize } from "./db.js";           // DB productos
 import { sequelize as userDB } from "./dbUser.js"; // DB usuarios
 import { seedProducts } from "./seeders/seedProducts.js";
+import { seedSuperAdmin } from "./seeders/seedSuperAdmin.js";
 
 //rutas
 import authRoutes from "./routes/auth.js";
@@ -49,6 +50,7 @@ const startServer = async () => {
     await seedProducts(); // carga los productos si no hay
 
     await userDB.sync({ alter: true });
+    await seedSuperAdmin(); // se crea el superadmin
 
     app.listen(PORT, () => {
       console.log(`Servidor escuchando en http://localhost:${PORT}`);

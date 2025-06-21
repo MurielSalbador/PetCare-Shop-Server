@@ -18,16 +18,7 @@ export const register = async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10);
 
-    const adminKeyword = process.env.ADMIN_EMAIL_KEYWORD || "admin";
-    const superadminKeyword = process.env.SUPERADMIN_EMAIL_KEYWORD || "superAdmin";
-
-    let assignedRole = UserRoles.USER;
-
-    if (email.toLowerCase().includes(superadminKeyword.toLowerCase())) {
-      assignedRole = UserRoles.SUPERADMIN;
-    } else if (email.toLowerCase().includes(adminKeyword.toLowerCase())) {
-      assignedRole = UserRoles.ADMIN;
-    }
+    const assignedRole = UserRoles.USER;  // Siempre usuario común al registrar
 
     const user = await User.create({
       username,
